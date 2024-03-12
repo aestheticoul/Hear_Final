@@ -103,4 +103,4 @@ def login():
         return jsonify({'error': 'Invalid email or password'}), 401
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(debug=False)
