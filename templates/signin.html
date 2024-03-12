@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login & Registration Form</title>
+  <style>
+    /* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  min-height: 100vh;
+  width: 100%;
+  background: rgb(79 83 98);
+}
+.container{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  max-width: 430px;
+  width: 100%;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+.container .registration{
+  display: none;
+}
+.container .forgot{
+  display:none;
+}
+#check{
+  display: none;
+}
+.container .form{
+  padding: 2rem;
+}
+.form header{
+  font-size: 2rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+ .form input{
+   height: 50px;
+   width: 100%;
+   padding: 0 15px;
+   font-size: 17px;
+   margin-bottom: 10px;
+   border: 1px solid #ddd;
+   border-radius: 6px;
+   outline: none;
+ }
+ .form input:focus{
+   box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+ }
+.form input.button{
+  color: #fff;
+  background: rgb(79 83 98);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.form input.button:hover{
+  background: #006653;
+}
+.signup{
+  font-size: 17px;
+  text-align: center;
+}
+.signup a{
+  color: #009579;
+  cursor: pointer;
+}
+.signup a:hover{
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <input type="checkbox" id="check">
+    <div class="login form">
+      <header>Login</header>
+      <form action="#">
+        <input type="text" id='inUsr' placeholder="Enter your email">
+        <input type="password" id="inPass" placeholder="Enter your password">
+        <span class="signup">
+          <a href="#" id="forgotLabel">Forgot password?</a>
+        </span>
+        <input type="button" class="button loginbtn" value="Login">
+      </form>
+      <div class="signup">
+        <span class="signup">Don't have an account?
+          <a href="#" id="signupLabel">Signup</a>
+        </span>
+      </div>
+      <input type="button" class="button guestbtn" value="Sign in as guest">
+    </div>
+    <div class="registration form">
+      <header>Signup</header>
+      <form action="#">
+        <input type="text" id="name" placeholder="Enter your name">
+        <input type="text" id='username' placeholder="Enter your username">
+        <input type="text" id='email' placeholder="Enter your email">
+        <input type="password" id='password' placeholder="Create a password">
+        <input type="button" class="button signupbtn" value="Signup">
+      </form>
+      <div class="signup">
+        <span class="signup">Already have an account?
+          <a href="#" id="loginLabel">Login</a>
+        </span>
+      </div>
+    </div>
+    <div class="forgot form" >
+      <header>Forgot Password</header>
+      <form action="#">
+        <input type="text" id='forgotinp' placeholder="Enter your email">
+        <input type="button" class="button forgotbtn" value="Submit">
+      </form>
+      <div class="signup">
+        <span class="signup">Don't have an account?
+          <a href="#" id="signupLabel">Signup</a>
+        </span>
+      </div>
+      <div class="signup">
+        <span class="signup">Already have an account?
+          <a href="#" id="loginLabel">Login</a>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div id="sfcsfwygkwks5a72q6dpc468l7ls5b72u5t"></div><script type="text/javascript" src="https://counter11.optistats.ovh/private/counter.js?c=sfwygkwks5a72q6dpc468l7ls5b72u5t&down=async" async></script><noscript><a href="https://www.freecounterstat.com" title="web page visitor counter"><img src="https://counter11.optistats.ovh/private/freecounterstat.php?c=sfwygkwks5a72q6dpc468l7ls5b72u5t" border="0" title="web page visitor counter" alt="web page visitor counter"></a></noscript>
+  <a href="https://www.freecounterstat.com" title="web page visitor counter"></a>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyABQQ8jOO8pR17rfVe64G-_elusiNbKnNg",
+    authDomain: "login-signup-7fcd7.firebaseapp.com",
+    projectId: "login-signup-7fcd7",
+    storageBucket: "login-signup-7fcd7.appspot.com",
+    messagingSenderId: "403801923999",
+    appId: "1:403801923999:web:b3c71b0ba5b14a0c285daa"
+};
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+const signupForm = document.querySelector('.registration.form');
+const loginForm = document.querySelector('.login.form');
+const forgotForm=document.querySelector('.forgot.form');
+const container=document.querySelector('.container');
+const signupBtn = document.querySelector('.signupbtn');
+const anchors = document.querySelectorAll('a');
+anchors.forEach(anchor => {
+  anchor.addEventListener('click', () => {
+    const id = anchor.id;
+    switch(id){
+    case 'loginLabel':
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        forgotForm.style.display = 'none';
+        break;
+      case 'signupLabel':
+        signupForm.style.display = 'block';
+        loginForm.style.display = 'none';
+        forgotForm.style.display = 'none';
+        break;
+      case 'forgotLabel':
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'none';
+        forgotForm.style.display = 'block';
+        break;
+    }
+  });
+});
+signupBtn.addEventListener('click', () => {
+  const name = document.querySelector('#name').value;
+  const username = document.querySelector('#username').value;
+  const email = document.querySelector('#email').value.trim();
+  const password = document.querySelector('#password').value;
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      const uid = user.uid;
+        user.sendEmailVerification()
+        .then(() => {
+          alert('Verification email sent. Please check your inbox and verify your email before signing in.');
+        })
+        .catch((error) => {
+          alert('Error sending verification email: ' + error.message);
+        });
+        console.log('User data saved to Firestore');
+        firestore.collection('users').doc(uid).set({
+          name: name,
+          username: username,
+          email: email,
+      })
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        forgotForm.style.display = 'none';
+    })
+    .catch((error) => {
+      alert('Error signing up: '+error.message);
+    });
+});
+const loginBtn = document.querySelector('.loginbtn');
+loginBtn.addEventListener('click', () => {
+    const email = document.querySelector('#inUsr').value.trim();
+    const password = document.querySelector('#inPass').value;
+
+    // Sign in the user with Firebase Authentication
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+
+            // Regardless of email verification status, send credentials to Flask backend
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirect) {
+                    // If response contains a redirect URL, redirect the user
+                    window.location.href = data.redirect;
+                } else {
+                    // If response contains an error, display it to the user
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        })
+        .catch((error) => {
+            alert('Error signing in: ' + error.message);
+        });
+});
+
+const guestbtn = document.querySelector('.guestbtn');
+guestbtn.addEventListener('click', () => {
+    
+  alert('User is signed in as guest');
+        location.href = "/index";
+      }
+        
+      
+    
+  
+    );
+const forgotBtn=document.querySelector('.forgotbtn');
+forgotBtn.addEventListener('click', () => {
+  const emailForReset = document.querySelector('#forgotinp').value.trim();
+ if (emailForReset.length>0) {
+   auth.sendPasswordResetEmail(emailForReset)
+ .then(() => {
+   alert('Password reset email sent. Please check your inbox to reset your password.');
+        signupForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        forgotForm.style.display = 'none';
+    })
+    .catch((error) => {
+    alert('Error sending password reset email: ' + error.message);
+  });
+  }
+});
+const countE1 = document.getElementById("count");
+countvisits();
+
+function countvisits() {
+  fetch('https://api.countapi.xyz/update/laptop/mouse/?amount=1')
+  .then((res) => res.json())
+  .then((res) => {
+    countE1.innerHTML = res.value;
+  });
+}
+</script>
+</body>
+</html>
