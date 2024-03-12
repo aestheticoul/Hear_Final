@@ -29,21 +29,7 @@ def chatu():
 @app.route('/accordion__content', methods=['GET', 'POST'])
 def accordion__content():
     return render_template("index.html")
-@app.route('/login', methods=['POST'])
-def login():
-    # Extract email and password from the request JSON data
-    data = request.json
-    email = data.get('email')
-    password = data.get('password')
 
-    # Perform authentication logic (example)
-    # You should replace this with your actual authentication logic
-    if email == email and password == password:
-        # If authentication succeeds, redirect to index.html
-        return jsonify({'redirect': '/index'})
-    else:
-        # If authentication fails, return an error response
-        return jsonify({'error': 'Invalid email or password'}), 401
 # @app.route('/submitform', methods = ['POST'])
 # def submitform():
 #     name = request.form['name']
@@ -189,12 +175,26 @@ def predict():
     # output = prediction[0]
     # print("rESPONSES:",responses[0])
     return render_template("result.html",result = responses)
+    @app.route('/login', methods=['POST'])
+def login():
+    # Extract email and password from the request JSON data
+    data = request.json
+    email = data.get('email')
+    password = data.get('password')
+
+    # Perform authentication logic (example)
+    # You should replace this with your actual authentication logic
+    if email == email and password == password:
+        # If authentication succeeds, redirect to index.html
+        return jsonify({'redirect': '/index'})
+    else:
+        # If authentication fails, return an error response
+        return jsonify({'error': 'Invalid email or password'}), 401
     
 
 
     
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+
 
 
 
